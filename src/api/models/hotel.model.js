@@ -6,26 +6,34 @@ const {
 const hotelSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        minlength: 2,
+        maxlength: 50,
     },
     address: {
         type: String,
-        required: true
+        required: true,
+        minlength: 2,
+        maxlength: 50,
     },
     roomCount: {
         type: Number,
-        required: true
+        required: true,
+        min: 1,
+        max: 7,
+        default: 1
     },
     status: {
         type: String,
-        required: true
+        required: true,
+        enum: ['active', 'inactive'],
+        default: 'active'
     },
     price: {
         type: Number,
-        required: true
-    },
-    hotelId: {
-        type: String
+        required: true,
+        min: 10,
+        max: 1000
     }
 });
 

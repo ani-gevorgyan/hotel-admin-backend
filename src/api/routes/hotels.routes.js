@@ -1,22 +1,22 @@
 const Router = require('express');
 const {
-    createHotel
-} = require('../handlers/hotel.handlers');
+    createHotel,
+    getAllHotels,
+    deleteHotel,
+    updateHotel,
+    getHotelById
+} = require('../controllers/hotel.controllers.js');
 
 const router = Router();
 
-router.get('/hotels', (req, res) => {
-    res.send('Helyooooo');
-})
+router.get('/hotels', getAllHotels);
 
-// router.post('/hotel', (req, res) => {
-//     const newHotel = req.body;
-//     console.log(newHotel);
-//     res.send({
-//         newHotel
-//     });
-// });
+router.get('/hotel/:id', getHotelById);
 
 router.post('/hotel', createHotel);
+
+router.delete('/hotels/:id', deleteHotel);
+
+router.put('/hotels/:id', updateHotel);
 
 module.exports = router;

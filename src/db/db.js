@@ -1,15 +1,9 @@
 const mongoose = require('mongoose');
+const config = require('../utils/config');
 
-// mongoose.connect('mongodb://localhost:27017/hotelApp', {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-// }).then(() => {
-//     console.log('Database connected.');
-// })
+const URL = config.db.url;
 
-const URL = 'mongodb://localhost:27017/hotelApp'
-
-module.exports = (server) => {
+module.exports = () => {
     mongoose.connect(
         URL, {
             useNewUrlParser: true,
@@ -18,7 +12,6 @@ module.exports = (server) => {
             useFindAndModify: false,
         },
         () => {
-            server
             console.log('Database connected');
         }
     )
