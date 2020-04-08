@@ -20,21 +20,22 @@ const hotelSchema = new Schema({
         type: Number,
         required: true,
         min: 1,
-        max: 7,
-        default: 1
+        max: 7
     },
     status: {
         type: String,
         required: true,
         enum: ['active', 'inactive'],
-        default: 'active'
+        default: 'active',
     },
     price: {
         type: Number,
         required: true,
         min: 10,
         max: 1000
-    }
+    },
+}, {
+    strict: "throw"
 });
 
 module.exports = model('Hotel', hotelSchema);

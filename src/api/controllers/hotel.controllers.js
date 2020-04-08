@@ -1,17 +1,13 @@
 const Hotel = require('../models/hotel.model');
 
-exports.createHotel = async (req, res) => {
+exports.createHotel = async (req, res, next) => {
     const data = req.body;
-    console.log('-------', data);
     const newHotel = new Hotel({
         ...data
     });
-    console.log('+++++++', newHotel);
     await newHotel.save(err => {
         if (err) {
-            return res.status(500).json({
-                message: 'Something went wrong'
-            });
+            return next(err);
         }
         return res.status(201).json({
             message: 'Hotel Created',
@@ -20,33 +16,53 @@ exports.createHotel = async (req, res) => {
     });
 }
 
-exports.getAllHotels = async (req, res) => {
-    const hotels = await Hotel.find({});
+exports.getAllHotels = async (req, res, next) => {
+    const hotels = await Hotel.find({}, (err, hotels) => {
+        if (hotels.length === 0) {
+            return next(err);
+        }
+    });
     return res.status(200).json(hotels);
 }
 
-exports.getHotelById = async (req, res) => {
-    const hotel = await Hotel.findById({
-        _id: req.params.id
-    });
+exports.getHotelById = async (req, res, next) => {
+    const _id = req.params.id;
+    const hotel = await Hotel.findById(
+        _id, (err) => {
+            if (err) {
+                return next(err);
+            }
+        })
+
     return res.status(200).json(hotel);
 }
 
-exports.deleteHotel = async (req, res) => {
+exports.deleteHotel = async (req, res, next) => {
+    const _id = req.params.id;
     await Hotel.deleteOne({
-            _id: req.params.id
-        })
-        .catch(e => console.log(e))
+        _id
+    }, (err) => {
+        if (err) {
+            return next(err)
+        }
+    })
     return res.status(200).json({
         message: 'Hotel Deleted'
     })
 }
 
-exports.updateHotel = async (req, res) => {
+exports.updateHotel = async (req, res, next) => {
     const _id = req.params.id;
     await Hotel.findByIdAndUpdate(_id, {
         ...req.body
+    }, {
+        runValidators: true
+    }, (err) => {
+        if (err) {
+            return next(err);
+        }
     });
+
     return res.status(200).json({
         message: req.body
     })
