@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(morgan('dev'));
 app.use('/api/v1/hotels', hotelRouter);
-app.use(userRouter);
+app.use('/api/v1/users', userRouter);
 app.use(errorHandler)
 app.listen(config.server.port, () => {
     console.log(`Magic is happening on port ${config.server.port}`)

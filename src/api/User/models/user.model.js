@@ -35,7 +35,8 @@ const userSchema = new Schema({
         maxlength: 16
     },
     hotelId: {
-        type: String
+        type: String,
+        default: 'No hotel Reservation'
     }
 }, {
     strict: "throw"

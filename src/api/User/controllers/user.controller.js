@@ -1,73 +1,78 @@
 const User = require('../models/user.model');
+const asyncHandler = require('../../Hotel/middleware/asyncHandler');
 
-exports.createUser = async (req, res, next) => {
-    const data = req.body;
-    const newUser = new User({
-        ...data
+exports.createUser = asyncHandler(async (req, res, next) => {
+    const user = await User.create({
+        ...req.body
     });
-    await newUser.save(err => {
-        if (err) {
-            return next(err);
-        }
-        return res.status(201).json({
-            message: 'User Created',
-            user: newUser
+    res.status(201).json({
+        success: true,
+        data: user
+    });
+});
+
+
+exports.getUsers = asyncHandler(async (req, res, next) => {
+    const users = await User.find({});
+    res.status(200).json({
+        success: true,
+        data: users,
+        message: 'Loaded'
+    });
+});
+
+exports.getUserById = asyncHandler(async (req, res, next) => {
+    const id = req.params.id;
+    const user = await User.findById({
+        _id: id
+    });
+    if (!user) {
+        throw new ErrorResponse('User not found', 404);
+    }
+    res.status(200).json({
+        success: true,
+        data: user
+    });
+});
+
+exports.deleteUser = asyncHandler(async (req, res, next) => {
+    const id = req.params.id;
+    const user = await User.findById({
+        _id: id
+    });
+    if (!user) {
+        throw new ErrorResponse('User Not Found', 404);
+    } else {
+        await User.deleteOne({
+            _id: id
         });
+    }
+    res.status(200).json({
+        success: true,
+        data: 'User Deleted'
     });
-}
+});
 
-// exports.getAllHotels = async (req, res, next) => {
-//     const hotels = await Hotel.find({}, (err, hotels) => {
-//         if (hotels.length === 0) {
-//             return next(err);
-//         }
-//     });
-//     return res.status(200).json({
-//         hotels,
-//         message: 'Loaded'
-//     });
-// }
 
-// exports.getHotelById = async (req, res, next) => {
-//     const _id = req.params.id;
-//     const hotel = await Hotel.findById(
-//         _id, (err) => {
-//             if (err) {
-//                 return next(err);
-//             }
-//         })
-
-//     return res.status(200).json(hotel);
-// }
-
-// exports.deleteHotel = async (req, res, next) => {
-//     const _id = req.params.id;
-//     await Hotel.deleteOne({
-//         _id
-//     }, (err) => {
-//         if (err) {
-//             return next(err)
-//         }
-//     })
-//     return res.status(200).json({
-//         message: 'Hotel Deleted'
-//     })
-// }
-
-// exports.updateHotel = async (req, res, next) => {
-//     const _id = req.params.id;
-//     await Hotel.findByIdAndUpdate(_id, {
-//         ...req.body
-//     }, {
-//         runValidators: true
-//     }, (err) => {
-//         if (err) {
-//             return next(err);
-//         }
-//     });
-
-//     return res.status(200).json({
-//         data: req.body,
-//         message: 'Updated Successfully'
-//     })
-// }
+exports.updateUser = asyncHandler(async (req, res, next) => {
+    const id = req.params.id;
+    const user = await User.findById({
+        _id: id
+    });
+    if (!user) {
+        throw new ErrorResponse('User Not Found', 404);
+    } else {
+        await User.findByIdAndUpdate({
+            _id: id
+        }, {
+            ...req.body
+        }, {
+            runValidators: true
+        });
+    }
+    res.status(200).json({
+        success: true,
+        data: req.body,
+        message: 'Updated'
+    });
+});
