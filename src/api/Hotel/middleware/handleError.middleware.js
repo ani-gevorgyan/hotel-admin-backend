@@ -1,4 +1,4 @@
-const ErrorResponse = require('../../utils/errorResponse');
+const ErrorResponse = require('../../../utils/errorResponse');
 
 const errorHandler = (err, req, res, next) => {
     console.log('*********************', err);
@@ -13,7 +13,7 @@ const errorHandler = (err, req, res, next) => {
         const message = 'Duplicate value';
         error = new ErrorResponse(message, 400);
     } else if (err.name === 'ValidationError') {
-        const message = Object.values(err.errors).map(val => val.message).join(', ');
+        const message = err.message || Object.values(err.errors).map(val => val.message).join(', ');
         error = new ErrorResponse(message, 400);
     }
     res.status(error.statusCode || 500).json({

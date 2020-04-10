@@ -3,6 +3,9 @@ const {
     model
 } = require('mongoose');
 
+const active = 'active';
+const inactive = 'inactive';
+
 const hotelSchema = new Schema({
     name: {
         type: String,
@@ -25,7 +28,7 @@ const hotelSchema = new Schema({
     status: {
         type: String,
         required: true,
-        enum: ['active', 'inactive'],
+        enum: [active, inactive],
         default: 'active',
     },
     price: {
@@ -34,8 +37,6 @@ const hotelSchema = new Schema({
         min: 10,
         max: 1000
     },
-}, {
-    strict: "throw"
 });
 
 module.exports = model('Hotel', hotelSchema);
