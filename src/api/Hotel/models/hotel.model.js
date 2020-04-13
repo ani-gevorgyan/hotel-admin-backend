@@ -3,8 +3,8 @@ const {
     model
 } = require('mongoose');
 
-const active = 'active';
-const inactive = 'inactive';
+const STATUS_ACTIVE = 'active';
+const STATUS_INACTIVE = 'inactive';
 
 const hotelSchema = new Schema({
     name: {
@@ -28,7 +28,7 @@ const hotelSchema = new Schema({
     status: {
         type: String,
         required: true,
-        enum: [active, inactive],
+        enum: [STATUS_ACTIVE, STATUS_INACTIVE],
         default: 'active',
     },
     price: {

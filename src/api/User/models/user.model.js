@@ -26,17 +26,21 @@ const userSchema = new Schema({
         type: String,
         required: true,
         minlength: 5,
-        maxlength: 16
+        maxlength: 256
     },
-    confirmPassword: {
+    // confirmPassword: {
+    //     type: String,
+    //     required: true,
+    //     minlength: 5,
+    //     maxlength: 256
+    // },
+    // hotelId: {
+    //     type: String,
+    //     default: '-'
+    // },
+    type: {
         type: String,
-        required: true,
-        minlength: 5,
-        maxlength: 16
-    },
-    hotelId: {
-        type: String,
-        default: 'No hotel Reservation'
+        default: 'user'
     }
 }, {
     strict: "throw"

@@ -7,8 +7,8 @@ const morgan = require('morgan');
 const hotelRouter = require('./src/api/Hotel/routes/hotel.routes');
 const userRouter = require('./src/api/User/routes/user.routes');
 const db = require('./src/db/db');
-const config = require('./src/api/config/config');
-const errorHandler = require('./src/api/Hotel/middleware/handleError.middleware');
+const config = require('./src/config/config');
+const errorHandler = require('./src/middleware/handleError.middleware');
 
 const app = express();
 
