@@ -9,6 +9,7 @@ const userRouter = require('./src/api/User/routes/user.routes');
 const db = require('./src/db/db');
 const config = require('./src/config/config');
 const errorHandler = require('./src/middleware/handleError.middleware');
+var cookieParser = require('cookie-parser');
 
 const app = express();
 
@@ -18,9 +19,10 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(cors());
 app.use(morgan('dev'));
+app.use(cookieParser());
 app.use('/api/v1/hotels', hotelRouter);
 app.use('/api/v1/users', userRouter);
-app.use(errorHandler)
+app.use(errorHandler);
 app.listen(config.server.port, () => {
     console.log(`Magic is happening on port ${config.server.port}`)
 });
