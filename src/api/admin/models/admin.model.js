@@ -7,20 +7,14 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../../../config/config');
 
-const UserSchema = new Schema({
+const AdminSchema = new Schema({
     email: {
         type: String,
         match: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
         required: true,
         unique: true,
     },
-    firstName: {
-        type: String,
-        required: true,
-        minlength: 2,
-        maxlength: 40,
-    },
-    lastName: {
+    username: {
         type: String,
         required: true,
         minlength: 2,
@@ -34,14 +28,14 @@ const UserSchema = new Schema({
     }
 });
 
-UserSchema.methods.isMatchPassword = async function (password) {
+AdminSchema.methods.isMatchPassword = async function (password) {
     return await bcrypt.compare(password, this.password);
 };
 
-UserSchema.methods.getSignedJwtToken = function () {
+AdminSchema.methods.getSignedJwtToken = function () {
     return jwt.sign({id: this._id}, config.token.key, { expiresIn: '1d' });
 }
 
-let User = models.User || model('User', UserSchema);
+let Admin = models.Admin || model('Admin', AdminSchema);
 
-module.exports = User;
+module.exports = Admin;

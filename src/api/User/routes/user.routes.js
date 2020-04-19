@@ -4,12 +4,11 @@ const {
     updateUser,
     deleteUser,
 } = require('../controllers/user.controller.js');
-const {login} = require('../../../auth/controllers/auth.controller');
+const auth = require('../../../middleware/checkAuth.middleware');
 
 const router = Router();
 
-router.route('/').get(getUsers);
-router.route('/:id').put(updateUser).delete(deleteUser);
-router.route('/admin').post(login);
+router.route('/').get(auth, getUsers);
+router.route('/:id').put(auth, updateUser).delete(auth, deleteUser);
 
 module.exports = router;

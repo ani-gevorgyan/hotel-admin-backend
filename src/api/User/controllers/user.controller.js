@@ -4,9 +4,7 @@ const asyncHandler = require('../../../middleware/asyncHandler');
 const ErrorResponse = require('../../../utils/errorResponse');
 
 exports.getUsers = asyncHandler(async (req, res, next) => {
-    const users = await User.find({
-        type: 'user'
-    });
+    const users = await User.find();
     res
         .status(200)
         .json({

@@ -6,6 +6,7 @@ module.exports = {
         url: process.env.DB_URL,
     },
     token: {
-        key: process.env.JWT_KEY
+        key: process.env.JWT_KEY,
+        expireTime: process.env.TOKEN_COOKIE_EXPIRES_IN
     }
 }
