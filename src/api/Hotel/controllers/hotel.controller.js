@@ -1,9 +1,15 @@
-const Hotel = require('../models/hotel.model');
-const ErrorResponse = require('../../../utils/errorResponse');
 const asyncHandler = require('../../../middleware/asyncHandler');
+const {
+    getActiveHotels,
+    createHotel,
+    hotelById,
+    deleteHotel,
+    updateHotel
+} = require('../services/hotel.service');
+
 
 exports.createHotel = asyncHandler(async (req, res, next) => {
-    const hotel = await Hotel.create(req.body);
+    const hotel = await createHotel(req.body);
     res.status(201).json({
         success: true,
         data: hotel
@@ -11,7 +17,7 @@ exports.createHotel = asyncHandler(async (req, res, next) => {
 });
 
 exports.getHotels = asyncHandler(async (req, res, next) => {
-    const hotels = await Hotel.find();
+    const hotels = await getActiveHotels();
     res.status(200).json({
         success: true,
         data: hotels
@@ -20,12 +26,7 @@ exports.getHotels = asyncHandler(async (req, res, next) => {
 
 exports.getHotelById = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
-    const hotel = await Hotel.findById({
-        _id: id
-    });
-    if (!hotel) {
-        throw new ErrorResponse('Hotel not found', 404);
-    }
+    const hotel = await hotelById(id);
     res.status(200).json({
         success: true,
         data: hotel
@@ -34,15 +35,7 @@ exports.getHotelById = asyncHandler(async (req, res, next) => {
 
 exports.deleteHotel = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
-    const hotel = await Hotel.findById({
-        _id: id
-    });
-    if (!hotel) {
-        throw new ErrorResponse('Hotel Not Found', 404);
-    }
-    await Hotel.deleteOne({
-        _id: id
-    });
+    const hotel = await deleteHotel(id);
     res.status(200).json({
         success: true,
         data: hotel
@@ -51,14 +44,7 @@ exports.deleteHotel = asyncHandler(async (req, res, next) => {
 
 exports.updateHotel = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
-    let hotel = await Hotel.findById(id);
-    if (!hotel) {
-        throw new ErrorResponse('Hotel Not Found', 404);
-    }
-    hotel = await Hotel.findByIdAndUpdate(id, req.body, {
-        runValidators: true,
-        new: true
-    });
+    const hotel = await updateHotel(id, req.body);
     res.status(200).json({
         success: true,
         data: hotel
