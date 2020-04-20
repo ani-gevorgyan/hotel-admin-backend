@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
-const User = require('../api/user/models/user.model');
+const Admin = require('../api/admin/models/admin.model');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/asyncHandler');
 
@@ -15,14 +15,13 @@ module.exports = asyncHandler(async (req, res, next) => {
     if (!token) {
         return next(new ErrorResponse('Not authorized for this route', 401));
     }
-    console.log('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj', token);
     try {
         const decoded = jwt.verify(token, config.token.key);
         const id = decoded.id;
-        const admin = await User.findById(id);
+        const admin = await Admin.findById(id);
         req.user = admin;
         next();
     } catch (err) {
-        return next(err);
+        return next(new ErrorResponse('Not authorized for this route', 401));
     }
 });

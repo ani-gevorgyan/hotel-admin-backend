@@ -1,7 +1,6 @@
 const {
     Schema,
-    model,
-    models
+    model
 } = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -42,6 +41,4 @@ UserSchema.methods.getSignedJwtToken = function () {
     return jwt.sign({id: this._id}, config.token.key, { expiresIn: '1d' });
 }
 
-let User = models.User || model('User', UserSchema);
-
-module.exports = User;
+module.exports = model('User', UserSchema);;

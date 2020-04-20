@@ -10,7 +10,7 @@ const checkAuth = require('../../../middleware/checkAuth.middleware');
 
 const router = Router();
 
-router.route('/').get(checkAuth, getHotels).post(createHotel);
-router.route('/:id').get(getHotelById).put(updateHotel).delete(deleteHotel);
+router.route('/').get(checkAuth, getHotels).post(checkAuth, createHotel);
+router.route('/:id').get(checkAuth, getHotelById).put(checkAuth, updateHotel).delete(checkAuth, deleteHotel);
 
 module.exports = router;

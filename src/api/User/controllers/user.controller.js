@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const User = require('../models/user.model');
 const asyncHandler = require('../../../middleware/asyncHandler');
 const ErrorResponse = require('../../../utils/errorResponse');

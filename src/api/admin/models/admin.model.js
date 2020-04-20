@@ -1,7 +1,6 @@
 const {
     Schema,
-    model,
-    models
+    model
 } = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -36,6 +35,4 @@ AdminSchema.methods.getSignedJwtToken = function () {
     return jwt.sign({id: this._id}, config.token.key, { expiresIn: '1d' });
 }
 
-let Admin = models.Admin || model('Admin', AdminSchema);
-
-module.exports = Admin;
+module.exports = model('Admin', AdminSchema);

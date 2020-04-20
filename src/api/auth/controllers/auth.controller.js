@@ -4,7 +4,10 @@ const ErrorResponse = require('../../../utils/errorResponse');
 const config = require('../../../config/config');
 
 exports.login = asyncHandler(async (req, res, next) => {
-    const { email, password } = req.body;
+    const {
+        email,
+        password
+    } = req.body;
 
     if (!email || !password) {
         return next(new ErrorResponse('Email and password are required', 401));
@@ -23,7 +26,7 @@ exports.login = asyncHandler(async (req, res, next) => {
     if (!isMatchPassword) {
         return next(new ErrorResponse('Invalid credentials', 401));
     }
-   sendTokenResponse(admin, 200, res);
+    sendTokenResponse(admin, 200, res);
 });
 
 
@@ -34,12 +37,15 @@ exports.logout = asyncHandler(async (req, res, next) => {
             expires: new Date(Date.now() + 10 * 1000),
             httpOnly: true
         })
-        .json({success: true, data: {}});
+        .json({
+            success: true,
+            data: 'none'
+        });
 });
 
 sendTokenResponse = (user, statusCode, res) => {
     const token = user.getSignedJwtToken();
-    
+
     const options = {
         expires: new Date(Date.now() + config.token.expireTime * 24 * 60 * 60 * 1000),
         httpOnly: true
