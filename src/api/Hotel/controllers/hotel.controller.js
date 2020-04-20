@@ -1,15 +1,9 @@
 const asyncHandler = require('../../../middleware/asyncHandler');
-const {
-    getActiveHotels,
-    createHotel,
-    hotelById,
-    deleteHotel,
-    updateHotel
-} = require('../services/hotel.service');
+const hotelService = require('../services/hotel.service');
 
 
 exports.createHotel = asyncHandler(async (req, res, next) => {
-    const hotel = await createHotel(req.body);
+    const hotel = await hotelService.createHotel(req.body);
     res.status(201).json({
         success: true,
         data: hotel
@@ -17,7 +11,7 @@ exports.createHotel = asyncHandler(async (req, res, next) => {
 });
 
 exports.getHotels = asyncHandler(async (req, res, next) => {
-    const hotels = await getActiveHotels();
+    const hotels = await hotelService.getActiveHotels();
     res.status(200).json({
         success: true,
         data: hotels
@@ -26,7 +20,7 @@ exports.getHotels = asyncHandler(async (req, res, next) => {
 
 exports.getHotelById = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
-    const hotel = await hotelById(id);
+    const hotel = await hotelService.getHotelById(id);
     res.status(200).json({
         success: true,
         data: hotel
@@ -35,7 +29,7 @@ exports.getHotelById = asyncHandler(async (req, res, next) => {
 
 exports.deleteHotel = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
-    const hotel = await deleteHotel(id);
+    const hotel = await hotelService.deleteHotel(id);
     res.status(200).json({
         success: true,
         data: hotel
@@ -44,7 +38,7 @@ exports.deleteHotel = asyncHandler(async (req, res, next) => {
 
 exports.updateHotel = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
-    const hotel = await updateHotel(id, req.body);
+    const hotel = await hotelService.updateHotel(id, req.body);
     res.status(200).json({
         success: true,
         data: hotel

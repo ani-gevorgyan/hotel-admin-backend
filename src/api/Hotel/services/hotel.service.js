@@ -1,43 +1,47 @@
 const Hotel = require('../models/hotel.model');
 const ErrorResponse = require('../../../utils/errorResponse');
 
-exports.getActiveHotels = async () => {
-    return await Hotel.find({
-        status: 'active'
-    });
-}
-
-exports.createHotel = async (data) => {
-    return await Hotel.create(data);
-}
-
-exports.hotelById = async (id) => {
-    const data = await Hotel.findById(id);
-    if (!data) {
-        throw new ErrorResponse('Hotel not found', 404);
+class HotelService {
+    async createHotel(data) {
+        return Hotel.create(data);
     }
-    return data;
+
+    async getActiveHotels() {
+        return Hotel.find({
+            status: 'active'
+        });
+    }
+
+    async getHotelById(id) {
+        const hotel = await Hotel.findById(id);
+        if (!hotel) {
+            throw new ErrorResponse('Hotel not found', 404);
+        }
+        return hotel;
+    }
+
+    async deleteHotel(id) {
+        const hotel = await Hotel.findById(id);
+        if (!hotel) {
+            throw new ErrorResponse('Hotel not found', 404);
+        }
+        await Hotel.deleteOne({
+            _id: id
+        });
+        return hotel;
+    }
+
+    async updateHotel(id, data) {
+        let hotel = await Hotel.findById(id);
+        if (!hotel) {
+            throw new ErrorResponse('Hotel not found', 404);
+        }
+        return Hotel.findByIdAndUpdate(id, data, {
+            runValidators: true,
+            new: true
+        });
+    }
 }
 
-exports.deleteHotel = async (id) => {
-    const data = await Hotel.findById(id);
-    if (!data) {
-        throw new ErrorResponse('Hotel not found', 404);
-    }
-    await Hotel.deleteOne({
-        _id: id
-    });
-    return data;
-}
-
-exports.updateHotel = async (id, data) => {
-    let hotel = await Hotel.findById(id);
-    if (!hotel) {
-        throw new ErrorResponse('Hotel not found', 404);
-    }
-    hotel = await Hotel.findByIdAndUpdate(id, data, {
-        runValidators: true,
-        new: true
-    })
-    return hotel;
-}
+const hotelService = new HotelService();
+module.exports = hotelService;
