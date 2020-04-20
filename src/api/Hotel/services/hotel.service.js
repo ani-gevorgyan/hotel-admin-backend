@@ -31,13 +31,13 @@ exports.deleteHotel = async (id) => {
 }
 
 exports.updateHotel = async (id, data) => {
-    const hotel = await Hotel.findById(id);
+    let hotel = await Hotel.findById(id);
     if (!hotel) {
         throw new ErrorResponse('Hotel not found', 404);
     }
-    const updated = await Hotel.findByIdAndUpdate(id, data, {
+    hotel = await Hotel.findByIdAndUpdate(id, data, {
         runValidators: true,
         new: true
     })
-    return updated;
+    return hotel;
 }
